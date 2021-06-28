@@ -324,7 +324,7 @@ var PermissionResponseNotification = func(w http.ResponseWriter, r *http.Request
 
 func sendPushNotification(title string, details string, activity string, userDetails models.UserModel, JSONDetails string) (err error) {
 	opt := option.WithCredentialsFile("service_account_key.json")
-	config := &firebase.Config{ProjectID: "rnl360-26edf"}
+	config := &firebase.Config{ProjectID: "rnl360-project"}
 	app, err := firebase.NewApp(context.Background(), config, opt)
 	if err != nil {
 		return err
