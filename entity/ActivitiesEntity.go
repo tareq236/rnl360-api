@@ -22,6 +22,7 @@ func GetTodayActivities(workArea string, activitiesResult *[]ActivitiesResult) (
 
 	// _, month, day := time.Now().Date()
 	// currentMonthDay := strconv.Itoa(int(month)) + "-" + strconv.Itoa(day)
+
 	if err = DB.GetSQLDB().Raw("SELECT CT.ID, DM.DrMasterID, DC.DrChildID, RTRIM(DM.DoctorName1 + ' ' + DM.DoctorName2) AS DoctorName, DM.CellPhone1, DM.Email1, DM.ProfessionalDegrees, S.SpecialityDescription, RTRIM(DC.Ch_Addr1 + ' ' + DC.Ch_Addr2) AS Ch_Addr, DM.DOB, DM.DOM FROM dbo.ChamberTerritory CT  INNER JOIN DoctorsChamberP DC ON CT.DrChildID=DC.DrChildID INNER JOIN DoctorsMasterP DM ON DC.DrMasterID=DM.DrMasterID INNER JOIN Speciality S ON DC.SpecialityCode=S.SpecialityCode WHERE CT.WorkAreaT = ? AND LEFT(CONVERT(VARCHAR(15), DM.DOB, 110), 5) LIKE LEFT(CONVERT(VARCHAR(15), GETDATE(), 110), 5);", workArea).Scan(activitiesResult).Error; err != nil {
 		return err
 	}
