@@ -42,7 +42,7 @@ func GetTodayActivities(workArea string, activitiesResult *[]ActivitiesResult) (
 
 func GetUpcomingActivities(workArea string, activitiesResult *[]ActivitiesResult) (err error) {
 
-	if err = DB.GetSQLDB().Raw("SELECT CT.ID, DM.DrMasterID, DC.DrChildID, RTRIM(DM.DoctorName1 + ' ' + DM.DoctorName2) AS DoctorName, DM.CellPhone1, DM.Email1, DM.ProfessionalDegrees, S.SpecialityDescription, RTRIM(DC.Ch_Addr1 + ' ' + DC.Ch_Addr2) AS Ch_Addr, DM.DOB, DM.DOM FROM dbo.ChamberTerritory CT  INNER JOIN DoctorsChamberP DC ON CT.DrChildID=DC.DrChildID INNER JOIN DoctorsMasterP DM ON DC.DrMasterID=DM.DrMasterID INNER JOIN Speciality S ON DC.SpecialityCode=S.SpecialityCode WHERE CT.WorkAreaT = ? AND LEFT(CONVERT(VARCHAR(15), DM.DOB, 110), 5) BETWEEN LEFT(CONVERT(VARCHAR(15), GETDATE(), 110), 5) AND LEFT(CONVERT(VARCHAR(15), GETDATE()+70, 110), 5);", workArea).Scan(activitiesResult).Error; err != nil {
+	if err = DB.GetSQLDB().Raw("SELECT CT.ID, DM.DrMasterID, DC.DrChildID, RTRIM(DM.DoctorName1 + ' ' + DM.DoctorName2) AS DoctorName, DM.CellPhone1, DM.Email1, DM.ProfessionalDegrees, S.SpecialityDescription, RTRIM(DC.Ch_Addr1 + ' ' + DC.Ch_Addr2) AS Ch_Addr, DM.DOB, DM.DOM FROM dbo.ChamberTerritory CT  INNER JOIN DoctorsChamberP DC ON CT.DrChildID=DC.DrChildID INNER JOIN DoctorsMasterP DM ON DC.DrMasterID=DM.DrMasterID INNER JOIN Speciality S ON DC.SpecialityCode=S.SpecialityCode WHERE CT.WorkAreaT = ? AND LEFT(CONVERT(VARCHAR(15), DM.DOB, 110), 5) BETWEEN LEFT(CONVERT(VARCHAR(15), GETDATE()+1, 110), 5) AND LEFT(CONVERT(VARCHAR(15), GETDATE()+70, 110), 5);", workArea).Scan(activitiesResult).Error; err != nil {
 		return err
 	}
 	return nil
