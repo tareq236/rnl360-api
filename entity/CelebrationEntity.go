@@ -80,7 +80,7 @@ func CelebrationDetails(celebration *models.CelebrationModel) (err error) {
 
 func GetAllCelebrationPendingRequest(celebration *[]models.CelebrationModel, work_area string) (err error) {
 
-	if err = DB.GetDB().Select("celebrations.*, text_message_list.details as text_message, user_list.user_name, response_type.response_type_name as permission_response_type_text").
+	if err = DB.GetDB().Select("celebrations.*, text_message_list.details as text_message, user_list.user_name, response_type.response_type_name as permission_response_type_text, (IF(celebrations.celebration_status = 1,'Celebrate','Do not celebrate')) as celebrate_status_text").
 		Joins("LEFT JOIN text_message_list ON celebrations.text_message_id = text_message_list.id").
 		Joins("LEFT JOIN user_list ON celebrations.work_area = user_list.work_area").
 		Joins("LEFT JOIN response_type ON celebrations.permission_response_type = response_type.id").
