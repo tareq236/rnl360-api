@@ -253,7 +253,7 @@ var PermissionResponseNotification = func(w http.ResponseWriter, r *http.Request
 	celebrationUpdate.ID = celebration.ID
 
 	if celebration.CelebrationStatus == 0 {
-		celebrationUpdate.PermissionRequestDateTime = time.Now()
+		celebrationUpdate.PermissionResponseDateTime = time.Now()
 		celebrationUpdate.ResponseType = 1
 	} else {
 
@@ -276,7 +276,7 @@ var PermissionResponseNotification = func(w http.ResponseWriter, r *http.Request
 		}
 		celebrationUpdate.PermissionResponseType = responseType.ID
 
-		celebrationUpdate.PermissionRequestDateTime = time.Now()
+		celebrationUpdate.PermissionResponseDateTime = time.Now()
 		celebrationUpdate.PermissionResponseText = celebration.PermissionResponseText
 		if responseType.ID == 3 {
 			celebrationUpdate.TextMessageID = 1
