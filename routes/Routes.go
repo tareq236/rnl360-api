@@ -29,6 +29,7 @@ func SetupRouter() *mux.Router {
 	router_version_1.HandleFunc("/update_celebration_with_photo", controllers.UpdateCelebrationWithPhoto).Methods("POST")
 	router_version_1.HandleFunc("/celebration_list_pending_request/{work_area}", controllers.GetAllCelebrationPendingRequest).Methods("GET")
 	router_version_1.HandleFunc("/celebration_list_permission_response/{work_area}", controllers.GetAllCelebrationPermissionResponse).Methods("GET")
+	router_version_1.HandleFunc("/celebration_list", controllers.GetAllCelebrationList).Methods("POST")
 
 	router_version_1.HandleFunc("/permission_response_notification", controllers.PermissionResponseNotification).Methods("POST")
 

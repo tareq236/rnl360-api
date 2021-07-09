@@ -36,6 +36,7 @@ type CelebrationModel struct {
 	PermissionResponseTypeText string    `sql:"-" json:"permission_response_type_text"`
 	ResponseTypeInput          string    `sql:"-" json:"response_type_input"`
 	CelebrateStatusText        string    `sql:"-" json:"celebrate_status_text"`
+	CelebrateStatus            string    `sql:"-" json:"celebrate_status"`
 }
 
 func (b *CelebrationModel) TableName() string {

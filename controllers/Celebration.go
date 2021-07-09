@@ -20,6 +20,34 @@ import (
 	"google.golang.org/api/option"
 )
 
+var GetAllCelebrationList = func(w http.ResponseWriter, r *http.Request) {
+
+	celebration := &models.CelebrationModel{}
+	err := json.NewDecoder(r.Body).Decode(celebration)
+	if err != nil {
+		u.Respond(w, u.Message(false, "Invalid request", err.Error()))
+		return
+	}
+
+	if celebration.CelebrateStatus == "1" {
+		var celebrationList []models.CelebrationModel
+		err_list := entity.GetAllCelebrationList(&celebrationList, celebration.RequestWorkArea)
+		if err_list != nil {
+			u.Respond(w, u.Message(false, "Celebration list error !", err_list.Error()))
+			return
+		} else {
+			if len(celebrationList) == 0 {
+				u.Respond(w, u.Message(false, "Celebration list empty !", ""))
+				return
+			}
+		}
+		resp := u.Message(true, "Celebration list found!", "")
+		resp["results"] = celebrationList
+		u.Respond(w, resp)
+	}
+
+}
+
 var DoNotCelebration = func(w http.ResponseWriter, r *http.Request) {
 
 	celebration := &models.CelebrationModel{}
