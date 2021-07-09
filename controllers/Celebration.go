@@ -259,26 +259,33 @@ var PermissionResponseNotification = func(w http.ResponseWriter, r *http.Request
 
 	celebrationUpdate := &models.CelebrationModel{}
 	celebrationUpdate.ID = celebration.ID
-	celebrationUpdate.PermissionStatus = celebration.PermissionStatus
 
-	responseType := &models.ResponseTypeModel{}
-	err_rtn := entity.GetResponseTypeName(responseType, celebration.PermissionResponseTypeText)
-	if err_rtn != nil {
-		u.Respond(w, u.Message(false, "Response type not found", ""))
-		return
-	}
-	celebrationUpdate.PermissionResponseType = responseType.ID
-
-	celebrationUpdate.PermissionRequestDateTime = time.Now()
-	celebrationUpdate.PermissionResponseText = celebration.PermissionResponseText
-	if responseType.ID == 3 {
-		celebrationUpdate.TextMessageID = 1
-	} else if responseType.ID == 4 {
-		celebrationUpdate.TextMessageID = 1
-	} else if responseType.ID == 6 {
-		celebrationUpdate.PermissionStatus = 3
+	if celebration.CelebrationStatus == 0 {
+		celebrationUpdate.PermissionRequestDateTime = time.Now()
 		celebrationUpdate.ResponseType = 1
+	} else {
+		celebrationUpdate.PermissionStatus = celebration.PermissionStatus
+
+		responseType := &models.ResponseTypeModel{}
+		err_rtn := entity.GetResponseTypeName(responseType, celebration.PermissionResponseTypeText)
+		if err_rtn != nil {
+			u.Respond(w, u.Message(false, "Response type not found", ""))
+			return
+		}
+		celebrationUpdate.PermissionResponseType = responseType.ID
+
+		celebrationUpdate.PermissionRequestDateTime = time.Now()
+		celebrationUpdate.PermissionResponseText = celebration.PermissionResponseText
+		if responseType.ID == 3 {
+			celebrationUpdate.TextMessageID = 1
+		} else if responseType.ID == 4 {
+			celebrationUpdate.TextMessageID = 1
+		} else if responseType.ID == 6 {
+			celebrationUpdate.PermissionStatus = 3
+			celebrationUpdate.ResponseType = 1
+		}
 	}
+
 	err_update := entity.UpdateCelebration(celebrationUpdate)
 	if err_update != nil {
 		u.Respond(w, u.Message(false, "Update error !", err_update.Error()))
@@ -302,7 +309,6 @@ var PermissionResponseNotification = func(w http.ResponseWriter, r *http.Request
 		u.Respond(w, u.Message(false, "JSON convert error", err_json.Error()))
 		return
 	}
-	fmt.Println()
 
 	title := "RM accept your request"
 	details := "You get some gift and take a picture"
