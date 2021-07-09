@@ -37,20 +37,33 @@ var GetActivities = func(w http.ResponseWriter, r *http.Request) {
 
 	resp := u.Message(true, "Data found!", "")
 
+	var todayActivitiesResultNew []entity.ActivitiesResult
+	for _, element := range todayActivitiesResult {
+		if !entity.IsCelebrationComplet(workArea, element.DrChildID) {
+			todayActivitiesResultNew = append(todayActivitiesResultNew, element)
+		}
+	}
+	var upcomingActivitiesResultNew []entity.ActivitiesResult
+	for _, element := range upcomingActivitiesResult {
+		if !entity.IsCelebrationComplet(workArea, element.DrChildID) {
+			upcomingActivitiesResultNew = append(upcomingActivitiesResultNew, element)
+		}
+	}
+
 	if len(blogs) == 0 {
 		resp["blogs"] = make([]int, 0)
 	} else {
 		resp["blogs"] = blogs
 	}
-	if len(todayActivitiesResult) == 0 {
+	if len(todayActivitiesResultNew) == 0 {
 		resp["today"] = make([]int, 0)
 	} else {
-		resp["today"] = todayActivitiesResult
+		resp["today"] = todayActivitiesResultNew
 	}
-	if len(upcomingActivitiesResult) == 0 {
+	if len(upcomingActivitiesResultNew) == 0 {
 		resp["upcoming"] = make([]int, 0)
 	} else {
-		resp["upcoming"] = upcomingActivitiesResult
+		resp["upcoming"] = upcomingActivitiesResultNew
 	}
 	u.Respond(w, resp)
 }

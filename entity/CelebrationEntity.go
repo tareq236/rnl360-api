@@ -117,3 +117,13 @@ func IsCelebrationChcekComplet(celebrationID int) (isComplet bool) {
 		return true
 	}
 }
+
+func IsCelebrationComplet(WorkArea string, DrChildID string) (isComplet bool) {
+	celebration := &models.CelebrationModel{}
+	err := DB.GetDB().Where("work_area = ? and dr_child_id = ? and response_type = ?", WorkArea, DrChildID, 1).Last(&celebration).Error
+	if err != nil {
+		return false
+	} else {
+		return true
+	}
+}
