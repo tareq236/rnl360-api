@@ -31,7 +31,22 @@ var GetAllCelebrationList = func(w http.ResponseWriter, r *http.Request) {
 
 	if celebration.CelebrateStatus == "1" {
 		var celebrationList []models.CelebrationModel
-		err_list := entity.GetAllCelebrationList(&celebrationList, celebration.RequestWorkArea)
+		err_list := entity.GetAllCelebrationListRM(&celebrationList, celebration.RequestWorkArea)
+		if err_list != nil {
+			u.Respond(w, u.Message(false, "Celebration list error !", err_list.Error()))
+			return
+		} else {
+			if len(celebrationList) == 0 {
+				u.Respond(w, u.Message(false, "Celebration list empty !", ""))
+				return
+			}
+		}
+		resp := u.Message(true, "Celebration list found!", "")
+		resp["results"] = celebrationList
+		u.Respond(w, resp)
+	} else if celebration.CelebrateStatus == "2" {
+		var celebrationList []models.CelebrationModel
+		err_list := entity.GetAllCelebrationListWA(&celebrationList, celebration.RequestWorkArea)
 		if err_list != nil {
 			u.Respond(w, u.Message(false, "Celebration list error !", err_list.Error()))
 			return

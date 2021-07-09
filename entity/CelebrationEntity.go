@@ -128,7 +128,22 @@ func IsCelebrationComplet(WorkArea string, DrChildID string) (isComplet bool) {
 	}
 }
 
-func GetAllCelebrationList(celebration *[]models.CelebrationModel, request_work_area string) (err error) {
+func GetAllCelebrationListRM(celebration *[]models.CelebrationModel, request_work_area string) (err error) {
+
+	if err = DB.GetDB().Select("celebrations.*, text_message_list.details as text_message, user_list.user_name, response_type.response_type_name as permission_response_type_text, (IF(celebrations.celebration_status = 1,'Celebrate','Do not celebrate')) as celebrate_status_text").
+		Joins("LEFT JOIN text_message_list ON celebrations.text_message_id = text_message_list.id").
+		Joins("LEFT JOIN user_list ON celebrations.work_area = user_list.work_area").
+		Joins("LEFT JOIN response_type ON celebrations.permission_response_type = response_type.id").
+		Where("celebrations.request_work_area = ?", request_work_area).
+		Order("celebrations.id DESC").
+		Find(&celebration).Error; err != nil {
+		return err
+	}
+	return nil
+
+}
+
+func GetAllCelebrationListWA(celebration *[]models.CelebrationModel, request_work_area string) (err error) {
 
 	if err = DB.GetDB().Select("celebrations.*, text_message_list.details as text_message, user_list.user_name, response_type.response_type_name as permission_response_type_text, (IF(celebrations.celebration_status = 1,'Celebrate','Do not celebrate')) as celebrate_status_text").
 		Joins("LEFT JOIN text_message_list ON celebrations.text_message_id = text_message_list.id").
