@@ -29,6 +29,7 @@ var DoNotCelebration = func(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	celebration.CelebrationStatus = 0
+	celebration.PermissionRequestDateTime = time.Now()
 
 	resp := entity.SaveCelebration(celebration)
 	u.Respond(w, resp)
