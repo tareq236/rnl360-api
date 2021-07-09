@@ -266,6 +266,7 @@ var PermissionResponseNotification = func(w http.ResponseWriter, r *http.Request
 			return
 		}
 
+		celebration.CelebrationStatus = 1
 		celebrationUpdate.PermissionStatus = celebration.PermissionStatus
 
 		responseType := &models.ResponseTypeModel{}
