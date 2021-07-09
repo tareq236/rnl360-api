@@ -248,14 +248,6 @@ var PermissionResponseNotification = func(w http.ResponseWriter, r *http.Request
 		u.Respond(w, u.Message(false, "Celebration ID is empty", ""))
 		return
 	}
-	if string(rune(celebration.PermissionStatus)) == "" {
-		u.Respond(w, u.Message(false, "Permission status is empty", ""))
-		return
-	}
-	if celebration.PermissionResponseTypeText == "" {
-		u.Respond(w, u.Message(false, "Permission response type is empty", ""))
-		return
-	}
 
 	celebrationUpdate := &models.CelebrationModel{}
 	celebrationUpdate.ID = celebration.ID
@@ -264,6 +256,16 @@ var PermissionResponseNotification = func(w http.ResponseWriter, r *http.Request
 		celebrationUpdate.PermissionRequestDateTime = time.Now()
 		celebrationUpdate.ResponseType = 1
 	} else {
+
+		if string(rune(celebration.PermissionStatus)) == "" {
+			u.Respond(w, u.Message(false, "Permission status is empty", ""))
+			return
+		}
+		if celebration.PermissionResponseTypeText == "" {
+			u.Respond(w, u.Message(false, "Permission response type is empty", ""))
+			return
+		}
+
 		celebrationUpdate.PermissionStatus = celebration.PermissionStatus
 
 		responseType := &models.ResponseTypeModel{}
