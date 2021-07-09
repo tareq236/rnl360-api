@@ -46,7 +46,7 @@ var GetAllCelebrationList = func(w http.ResponseWriter, r *http.Request) {
 		u.Respond(w, resp)
 	} else if celebration.CelebrateStatus == "2" {
 		var celebrationList []models.CelebrationModel
-		err_list := entity.GetAllCelebrationListWA(&celebrationList, celebration.RequestWorkArea)
+		err_list := entity.GetAllCelebrationListWA(&celebrationList, celebration.WorkArea)
 		if err_list != nil {
 			u.Respond(w, u.Message(false, "Celebration list error !", err_list.Error()))
 			return
