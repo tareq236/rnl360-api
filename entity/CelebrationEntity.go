@@ -134,7 +134,7 @@ func GetAllCelebrationListRM(celebration *[]models.CelebrationModel, request_wor
 		Joins("LEFT JOIN text_message_list ON celebrations.text_message_id = text_message_list.id").
 		Joins("LEFT JOIN user_list ON celebrations.work_area = user_list.work_area").
 		Joins("LEFT JOIN response_type ON celebrations.permission_response_type = response_type.id").
-		Where("celebrations.request_work_area = ?", request_work_area).
+		Where("celebrations.request_work_area = ? and celebrations.response_type = ?", request_work_area, 1).
 		Order("celebrations.id DESC").
 		Find(&celebration).Error; err != nil {
 		return err

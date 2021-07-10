@@ -295,10 +295,15 @@ var PermissionResponseNotification = func(w http.ResponseWriter, r *http.Request
 	celebrationUpdate := &models.CelebrationModel{}
 	celebrationUpdate.ID = celebration.ID
 
+	var activity string
+
 	if celebration.CelebrationStatus == 0 {
+		activity = "activity_details"
 		celebrationUpdate.PermissionResponseDateTime = time.Now()
 		celebrationUpdate.ResponseType = 1
 	} else {
+
+		activity = "activity_list"
 
 		if string(rune(celebration.PermissionStatus)) == "" {
 			u.Respond(w, u.Message(false, "Permission status is empty", ""))
@@ -358,7 +363,6 @@ var PermissionResponseNotification = func(w http.ResponseWriter, r *http.Request
 
 	title := "RM accept your request"
 	details := "You get some gift and take a picture"
-	activity := "celebration_details"
 	err_push := sendPushNotification(
 		title,
 		details,
