@@ -118,9 +118,9 @@ func IsCelebrationChcekComplet(celebrationID int) (isComplet bool) {
 	}
 }
 
-func IsCelebrationComplet(WorkArea string, DrChildID string) (isComplet bool) {
+func IsCelebrationComplet(WorkArea string, DrChildID string, DOB string) (isComplet bool) {
 	celebration := &models.CelebrationModel{}
-	err := DB.GetDB().Where("work_area = ? and dr_child_id = ? and response_type = ? and YEAR(created_at) = YEAR(CURDATE())", WorkArea, DrChildID, 1).Last(&celebration).Error
+	err := DB.GetDB().Where("work_area = ? and dr_child_id = ? and response_type = ? and date_of_birth = ? and YEAR(created_at) = YEAR(CURDATE())", WorkArea, DrChildID, 1, DOB).Last(&celebration).Error
 	if err != nil {
 		return false
 	} else {

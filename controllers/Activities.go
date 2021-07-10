@@ -39,13 +39,13 @@ var GetActivities = func(w http.ResponseWriter, r *http.Request) {
 
 	var todayActivitiesResultNew []entity.ActivitiesResult
 	for _, element := range todayActivitiesResult {
-		if !entity.IsCelebrationComplet(workArea, element.DrChildID) {
+		if !entity.IsCelebrationComplet(workArea, element.DrChildID, element.DOB) {
 			todayActivitiesResultNew = append(todayActivitiesResultNew, element)
 		}
 	}
 	var upcomingActivitiesResultNew []entity.ActivitiesResult
 	for _, element := range upcomingActivitiesResult {
-		if !entity.IsCelebrationComplet(workArea, element.DrChildID) {
+		if !entity.IsCelebrationComplet(workArea, element.DrChildID, element.DOB) {
 			upcomingActivitiesResultNew = append(upcomingActivitiesResultNew, element)
 		}
 	}
