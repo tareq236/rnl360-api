@@ -54,7 +54,7 @@ func CheckCelebrationPermission(celebration *models.CelebrationModel) (err error
 	if err = DB.GetDB().Select("celebrations.*, text_message_list.details as text_message, response_type.response_type_name as permission_response_type_text").
 		Joins("LEFT JOIN text_message_list ON celebrations.text_message_id = text_message_list.id").
 		Joins("LEFT JOIN response_type ON celebrations.permission_response_type = response_type.id").
-		Where("celebrations.work_area = ? and celebrations.chamber_territory_id = ? and celebrations.dr_child_id = ?", celebration.WorkArea, celebration.ChamberTerritoryID, celebration.DrChildID).
+		Where("celebrations.work_area = ? and celebrations.chamber_territory_id = ? and celebrations.dr_child_id = ? and celebrations.date_of_birth = ? and YEAR(celebrations.created_at) = YEAR(CURDATE())", celebration.WorkArea, celebration.ChamberTerritoryID, celebration.DrChildID, celebration.DateOfBirth).
 		Last(&celebration).Error; err != nil {
 		return err
 	}
