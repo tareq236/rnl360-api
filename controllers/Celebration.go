@@ -327,6 +327,7 @@ var PermissionResponseNotification = func(w http.ResponseWriter, r *http.Request
 
 		celebrationUpdate.PermissionResponseDateTime = time.Now()
 		celebrationUpdate.PermissionResponseText = celebration.PermissionResponseText
+		celebrationUpdate.PermissionResponseTypeText = celebration.PermissionResponseTypeText
 
 		PermissionResponseTypeTextArray := strings.Split(celebration.PermissionResponseTypeText, ",")
 		for i := 0; i < len(PermissionResponseTypeTextArray); i++ {
