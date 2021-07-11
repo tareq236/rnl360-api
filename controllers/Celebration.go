@@ -336,10 +336,6 @@ var PermissionResponseNotification = func(w http.ResponseWriter, r *http.Request
 			} else if PermissionResponseTypeTextArray[i] == "EMAIL" {
 				celebrationUpdate.TextMessageID = 1
 				celebrationUpdate.PermissionResponseTypeEmail = 1
-			} else {
-				celebrationUpdate.PermissionStatus = 3
-				celebrationUpdate.ResponseType = 1
-				celebrationUpdate.PermissionResponseType = 1
 			}
 		}
 
