@@ -317,24 +317,41 @@ var PermissionResponseNotification = func(w http.ResponseWriter, r *http.Request
 		celebrationUpdate.CelebrationStatus = 1
 		celebrationUpdate.PermissionStatus = celebration.PermissionStatus
 
-		responseType := &models.ResponseTypeModel{}
-		err_rtn := entity.GetResponseTypeName(responseType, celebration.PermissionResponseTypeText)
-		if err_rtn != nil {
-			u.Respond(w, u.Message(false, "Response type not found", ""))
-			return
-		}
-		celebrationUpdate.PermissionResponseType = responseType.ID
+		// responseType := &models.ResponseTypeModel{}
+		// err_rtn := entity.GetResponseTypeName(responseType, celebration.PermissionResponseTypeText)
+		// if err_rtn != nil {
+		// 	u.Respond(w, u.Message(false, "Response type not found", ""))
+		// 	return
+		// }
+		// celebrationUpdate.PermissionResponseType = responseType.ID
 
 		celebrationUpdate.PermissionResponseDateTime = time.Now()
 		celebrationUpdate.PermissionResponseText = celebration.PermissionResponseText
-		if responseType.ID == 3 {
-			celebrationUpdate.TextMessageID = 1
-		} else if responseType.ID == 4 {
-			celebrationUpdate.TextMessageID = 1
-		} else if responseType.ID == 6 {
-			celebrationUpdate.PermissionStatus = 3
-			celebrationUpdate.ResponseType = 1
+
+		PermissionResponseTypeTextArray := strings.Split(celebration.PermissionResponseTypeText, ",")
+		for i := 0; i < len(PermissionResponseTypeTextArray); i++ {
+			if PermissionResponseTypeTextArray[i] == "SMS" {
+				celebrationUpdate.TextMessageID = 1
+				celebrationUpdate.PermissionResponseTypeSms = 1
+			} else if PermissionResponseTypeTextArray[i] == "EMAIL" {
+				celebrationUpdate.TextMessageID = 1
+				celebrationUpdate.PermissionResponseTypeEmail = 1
+			} else {
+				celebrationUpdate.PermissionStatus = 3
+				celebrationUpdate.ResponseType = 1
+				celebrationUpdate.PermissionResponseType = 1
+			}
 		}
+
+		// if responseType.ID == 3 {
+		// 	celebrationUpdate.TextMessageID = 1
+		// } else if responseType.ID == 4 {
+		// 	celebrationUpdate.TextMessageID = 1
+		// } else if responseType.ID == 6 {
+		// 	celebrationUpdate.PermissionStatus = 3
+		// 	celebrationUpdate.ResponseType = 1
+		// }
+
 	}
 
 	err_update := entity.UpdateCelebration(celebrationUpdate)
