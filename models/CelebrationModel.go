@@ -25,6 +25,7 @@ type CelebrationModel struct {
 	PermissionResponseTypeText  string    `gorm:"default:NULL" json:"permission_response_type_text"` // GIFT,SMS,EMAIL
 	PermissionResponseTypeEmail uint      `gorm:"default:0" json:"permission_response_type_email"`   // EMAIL; 0 not 1 yes
 	PermissionResponseTypeSms   uint      `gorm:"default:0" json:"permission_response_type_sms"`     // SMS; 0 not 1 yes
+	PermissionResponseTypeGift  uint      `gorm:"default:0" json:"permission_response_type_gift"`    // All type of gift; 0 not 1 yes
 	PermissionResponseText      string    `gorm:"default:NULL" json:"permission_response_text"`
 	ResponseDateTime            time.Time `gorm:"default:NULL" json:"response_date_time"`
 	ResponseType                int       `gorm:"default:0" json:"response_type"` // 0=Not Complete; 1=Complete
