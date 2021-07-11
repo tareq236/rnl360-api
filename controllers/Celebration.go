@@ -334,7 +334,12 @@ var PermissionResponseNotification = func(w http.ResponseWriter, r *http.Request
 			if PermissionResponseTypeTextArray[i] == "SMS" {
 				celebrationUpdate.TextMessageID = 1
 				celebrationUpdate.PermissionResponseTypeSms = 1
-			} else if PermissionResponseTypeTextArray[i] == "EMAIL" {
+			}
+			if PermissionResponseTypeTextArray[i] == "EMAIL" {
+				celebrationUpdate.TextMessageID = 1
+				celebrationUpdate.PermissionResponseTypeEmail = 1
+			}
+			if PermissionResponseTypeTextArray[i] == "Food" || PermissionResponseTypeTextArray[i] == "Gift" || PermissionResponseTypeTextArray[i] == "As per policy" {
 				celebrationUpdate.TextMessageID = 1
 				celebrationUpdate.PermissionResponseTypeEmail = 1
 			}
