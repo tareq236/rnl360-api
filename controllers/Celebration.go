@@ -121,7 +121,7 @@ var AskCelebration = func(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	title := "MIO send a request"
-	details := "Please acccept this request"
+	details := "Please accept this request"
 	activity := "celebration_request_list"
 	err_push := sendPushNotification(
 		title,
@@ -318,6 +318,7 @@ var PermissionResponseNotification = func(w http.ResponseWriter, r *http.Request
 	celebrationUpdate.ID = celebration.ID
 
 	var activity string
+	var celebrationOptions string
 
 	if celebration.CelebrationStatus == 0 {
 		activity = "activity_details"
@@ -353,6 +354,7 @@ var PermissionResponseNotification = func(w http.ResponseWriter, r *http.Request
 
 		PermissionResponseTypeTextArray := strings.Split(celebration.PermissionResponseTypeText, ",")
 		for i := 0; i < len(PermissionResponseTypeTextArray); i++ {
+			celebrationOptions = celebrationOptions + ", " + PermissionResponseTypeTextArray[i]
 			if PermissionResponseTypeTextArray[i] == "SMS" {
 				celebrationUpdate.TextMessageID = 1
 				celebrationUpdate.PermissionResponseTypeSms = 1
@@ -402,8 +404,18 @@ var PermissionResponseNotification = func(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	title := "RM accept your request"
-	details := "You get some gift and take a picture"
+	var titleText string
+	var detailsText string
+	if celebration.CelebrationStatus == 0 {
+		titleText = "RM agree do not celebration"
+		detailsText = "RM accept do not celebration doctor birthday"
+	} else {
+		titleText = "RM accept celebration doctor birthday"
+		detailsText = "RM wants to celebration, " + celebrationOptions
+	}
+
+	title := titleText
+	details := detailsText
 	err_push := sendPushNotification(
 		title,
 		details,
@@ -415,7 +427,7 @@ var PermissionResponseNotification = func(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	resp := u.Message(true, "Push notification send successfully!", "")
+	resp := u.Message(true, "Request send successfully!", "")
 	u.Respond(w, resp)
 
 }
