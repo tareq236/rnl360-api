@@ -1,9 +1,7 @@
 package controllers
 
 import (
-	"context"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -12,11 +10,15 @@ import (
 	u "rnl360-api/utils"
 	"strconv"
 	"strings"
+
+	"github.com/gorilla/mux"
+
+	"context"
+	"fmt"
 	"time"
 
 	firebase "firebase.google.com/go/v4"
 	"firebase.google.com/go/v4/messaging"
-	"github.com/gorilla/mux"
 	"google.golang.org/api/option"
 )
 
@@ -75,6 +77,26 @@ var DoNotCelebration = func(w http.ResponseWriter, r *http.Request) {
 	celebration.PermissionRequestDateTime = time.Now()
 
 	resp := entity.SaveCelebration(celebration)
+
+	var userDetails []models.UserModel
+	err_user := entity.CheckUser(&userDetails, celebration.RequestWorkArea)
+	if err_user != nil {
+		u.Respond(w, u.Message(false, "User information not found", err_user.Error()))
+		return
+	}
+	title := "MIO do not celebration Dr. " + celebration.DoctorName + "'s Birthday !"
+	details := "Reasones: " + celebration.CelebrationCancelText + " !"
+	activity := "celebration_request_list"
+	err_push := sendPushNotification(
+		title,
+		details,
+		activity,
+		userDetails[0], "")
+	if err_push != nil {
+		u.Respond(w, u.Message(false, "Push notification  error", err_push.Error()))
+		return
+	}
+
 	u.Respond(w, resp)
 
 }
